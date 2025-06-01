@@ -5,7 +5,36 @@ function removeActiveClass(){
     }
     console.log(activeButton)
 }
+const loadVideoDetails=(VideoId)=>{
+console.log(VideoId)
+const url=`https://openapi.programming-hero.com/api/phero-tube/video/${VideoId}
+`;
+fetch(url)
+  .then((res)=>res.json())
+  .then((data)=>displayvideoDetails(data.video))
+}
 
+const displayvideoDetails=(video)=>{
+    console.log(video);
+    document.getElementById("video_details").showModal();
+    const detailsContainer=document.getElementById("details-container")
+    detailsContainer.innerHTML=`
+   <div class="card bg-base-100 image-full  shadow-sm">
+  <figure>
+    <img
+      src="${video.thumbnail}"
+      alt="videos" />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">${video.title}</h2>
+    <p>${video.authors[0].profile_name}</p>
+     <p>${video.others.views}</p>
+   
+  </div>
+</div>
+    
+    `
+}
 
 function loadcategories(){
     //fetch the data
@@ -98,7 +127,7 @@ profile_name} <img class="w-5 h-5" src="assets/icons8-verified-48 (1).png" alt="
 
   </div> 
   </div>
-  <button onclick=loadVideoDetails(${video.video_id}) class="btn btn-block">show details</button>
+  <button onclick=loadVideoDetails('${video.video_id}') class="btn btn-block">show details</button>
 </div>
         
         `
