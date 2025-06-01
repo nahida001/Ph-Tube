@@ -1,12 +1,3 @@
-function removeActiveClass(){
-    const activeButton=document.getElementsByClassName("active");
-    for(let btn of activeButton){
-        btn.classList.remove("active")
-    }
-    console.log(activeButton)
-}
-
-
 function loadcategories(){
     //fetch the data
     fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
@@ -17,6 +8,13 @@ function loadcategories(){
     //send data to display category
     .then((data) => diplaycategories(data.categories))
     
+}
+function removeActiveClass(){
+    const activeButton=document.getElementsByClassName("active");
+    for(let btn of activeButton){
+        btn.classList.remove("active")
+    }
+    console.log(activeButton)
 }
     
 function diplaycategories(categories){
@@ -41,6 +39,7 @@ function diplaycategories(categories){
 
 }
 
+
 function loadvedios(){
     fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
     .then((res) => res.json())
@@ -52,10 +51,9 @@ function loadvedios(){
 }
 const displayvideo =(videos)=>{
     const video_container=document.getElementById("video-container");
+ video_container.innerHTML = " " ;
 
-     video_container.innerHTML = " " ;
-
-     if( videos.length == 0){
+     
        video_container.innerHTML=`
          <div class="col-span-full flex flex-col justify-center items-center py-30 text-center ">
            <img src="./assets/Icon.png" alt="">
@@ -64,9 +62,9 @@ const displayvideo =(videos)=>{
         
         `;
 
-        return;
-     }
-    videos.forEach((video) => {
+      
+     
+     videos.forEach((video) => {
         console.log(video)
 
         const videocard=document.createElement("div")
@@ -107,6 +105,7 @@ profile_name} <img class="w-5 h-5" src="assets/icons8-verified-48 (1).png" alt="
     });
 }
 
+
 const loadCategoryVedios=(id)=>{
 const url=`https://openapi.programming-hero.com/api/phero-tube/category/${id}`
 console.log(url);
@@ -116,9 +115,10 @@ fetch(url)
     removeActiveClass();
         const clickButton=document.getElementById(`btn-${id}`)
         clickButton.classList.add("active");
-         displayvideo(data.category)
+         displayvideo(data.categories)
 
     })
 }
+
 
 loadcategories();
