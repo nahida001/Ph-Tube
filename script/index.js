@@ -37,8 +37,9 @@ const displayvideoDetails=(video)=>{
 }
 
 function loadcategories(){
+      showLoader()
     //fetch the data
-    fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/categories/${id}`)
     
     //convert promise to json
 
@@ -66,12 +67,14 @@ function diplaycategories(categories){
     //append the element
 
     categorycontainer.append(categoryDiv);
-}
+
 
 }
 
-function loadvedios(){
-    fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+}
+
+function loadvedios(searchText = ""){
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((res) => res.json())
     .then((data) =>{
         removeActiveClass();
@@ -92,8 +95,9 @@ const displayvideo =(videos)=>{
         </div>
         
         `;
-
+        hideLoader();
         return;
+        
      }
     videos.forEach((video) => {
         console.log(video)
@@ -120,19 +124,29 @@ const displayvideo =(videos)=>{
   <div class="intro">
     <h1 class="text-lg font-semibold pb-1">${video.title}
 </h1>
-    <p class="text-sm text-[#171717B3] flex gap-2">${video.authors[0].
-profile_name} <img class="w-5 h-5" src="assets/icons8-verified-48 (1).png" alt="">
+    <p class="text-sm text-[#171717B3] flex gap-2">
+    ${video.authors[0].profile_name} 
+    ${video.authors[0].verified == true 
+      ? 
+       `
+     <img class="w-5 h-5" src="assets/icons8-verified-48 (1).png" alt="">`
+      : ` `
+      } 
 </p>
-<p class="text-sm text-[#171717B3]">${video.others.views} Views</p>
+<p class="text-sm text-[#171717B3]">${video.others.views} Views
+
+
+</p>
 
   </div> 
   </div>
-  <button onclick=loadVideoDetails('${video.video_id}') class="btn btn-block">show details</button>
+  <button onclick=loadVideoDetails('${video.video_id}') class="btn btn-block">Show Details</button>
 </div>
         
         `
 
         video_container.append(videocard)
+        hideLoader();
     });
 }
 
@@ -149,5 +163,10 @@ fetch(url)
 
     })
 }
+document.getElementById('search-input').addEventListener("keyup" ,(e)=>{
+  const input=e.target.value;
+  loadvedios(input);
+})
+
 
 loadcategories();
